@@ -26,6 +26,7 @@ void bubble_sort(int *a, int N){
         x++;
         if(k == 0) break;
     }
+    return;
 }
 
 // 2. Selection Sort
@@ -41,6 +42,7 @@ void selection_sort(int *a, int N) {
         a[i] = a[min_idx];
         a[min_idx] = temp;
     }
+    return;
 }
 
 // 3. Insertion Sort
@@ -54,6 +56,7 @@ void insertion_sort(int *a, int N) {
         }
         a[j + 1] = key;
     }
+    return;
 }
 
 // 4. Shaker Sort
@@ -65,7 +68,7 @@ void shaker_sort(int *a, int N) {
     while (left < right && swapped) {
         swapped = 0;
         
-        // Проход слева направо
+        // Going forward 
         for (int i = left; i < right; i++) {
             if (a[i] > a[i + 1]) {
                 int temp = a[i];
@@ -76,7 +79,7 @@ void shaker_sort(int *a, int N) {
         }
         right--;
         
-        // Проход справа налево
+        // Going back
         for (int i = right; i > left; i--) {
             if (a[i - 1] > a[i]) {
                 int temp = a[i];
@@ -87,67 +90,44 @@ void shaker_sort(int *a, int N) {
         }
         left++;
     }
+    return;
 }
 
 // 5. Merge Sort
-void merge(int *a, int left, int mid, int right) {
-    int i, j, k;
-    int n1 = mid - left + 1;
-    int n2 = right - mid;
+void merge_sort(int *a, int N) {
+    if (N <= 1) return;
     
-    int *L = (int*)malloc(n1 * sizeof(int));
-    int *R = (int*)malloc(n2 * sizeof(int));
+    int mid = N / 2;
+    int n1 = mid;
+    int n2 = N - mid;
     
-    for (i = 0; i < n1; i++)
-        L[i] = a[left + i];
-    for (j = 0; j < n2; j++)
-        R[j] = a[mid + 1 + j];
+    // Spliting our massive
+    merge_sort(a, n1);
+    merge_sort(a + mid, n2);
     
-    i = 0;
-    j = 0;
-    k = left;
+    // Merging sorted parts
+    int *temp = (int*)malloc(N * sizeof(int));
+    int i = 0, j = 0, k = 0;
     
     while (i < n1 && j < n2) {
-        if (L[i] <= R[j]) {
-            a[k] = L[i];
-            i++;
+        if (a[i] <= a[mid + j]) {
+            temp[k++] = a[i++];
         } else {
-            a[k] = R[j];
-            j++;
+            temp[k++] = a[mid + j++];
         }
-        k++;
     }
     
-    while (i < n1) {
-        a[k] = L[i];
-        i++;
-        k++;
+    while (i < n1) temp[k++] = a[i++];
+    while (j < n2) temp[k++] = a[mid + j++];
+    
+    // Copy in our original massive
+    for (i = 0; i < N; i++) {
+        a[i] = temp[i];
     }
     
-    while (j < n2) {
-        a[k] = R[j];
-        j++;
-        k++;
-    }
-    
-    free(L);
-    free(R);
+    free(temp);
 }
 
-void merge_sort_helper(int *a, int left, int right) {
-    if (left < right) {
-        int mid = left + (right - left) / 2;
-        
-        merge_sort_helper(a, left, mid);
-        merge_sort_helper(a, mid + 1, right);
-        
-        merge(a, left, mid, right);
-    }
-}
-
-void merge_sort(int *a, int N) {
-    merge_sort_helper(a, 0, N - 1);
-}
 
 // 6. Heap Sort
 void heapify(int *a, int N, int i) {
@@ -168,6 +148,7 @@ void heapify(int *a, int N, int i) {
         
         heapify(a, N, largest);
     }
+    return;
 }
 
 void heap_sort(int *a, int N) {
@@ -181,4 +162,5 @@ void heap_sort(int *a, int N) {
         
         heapify(a, i, 0);
     }
+    return;
 }
