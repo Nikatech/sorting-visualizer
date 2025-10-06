@@ -207,21 +207,18 @@ void heap_sort_logging(int *original, int N) {
 }
 
 int main() {
-    ensure_data_dir();
-    
+	ensure_data_dir();
+
     int size = 45;
     int *original = malloc(size * sizeof(int));
-    
+
     srand(time(NULL));
     printf("Создаем массив из %d элементов:\n", size);
     for (int i = 0; i < size; i++) {
         original[i] = rand() % 1000 + 1;
-    }
 
-        
     printf("...\n\n");
-    
-    char *filenames[] = {
+       char *filenames[] = {
         "data/bubble_sort.json",
         "data/selection_sort.json", 
         "data/insertion_sort.json",
